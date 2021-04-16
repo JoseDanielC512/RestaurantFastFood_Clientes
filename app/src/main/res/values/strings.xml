@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">RestaurantFastFood_Clientes</string>
+    <string name="iniciar_sesion">Iniciar Sesion</string>
+    <string name="correo_electronico">Correo Electrónico</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="registrate">Registrate.</string>
+    <string name="olvidaste_tu_contraseña">¿Olvidaste tu contraseña?</string>
+    <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
+    <string name="slogan_login">La solución más deliciosa</string>
+    <string name="slogan_signin">Registrarte es fácil, rápido y gratis</string>
+    <string name="txt_llenar_campos_login">Llena todos los datos</string>
+    <string name="txt_datos_erroneos_login">Datos erróneos</string>
+    <string name="crear_cuenta">Crear Cuenta</string>
+    <string name="nombre_completo">Nombre Completo</string>
+    <string name="documento_de_identidad">Documento de Identidad</string>
 </resources>
