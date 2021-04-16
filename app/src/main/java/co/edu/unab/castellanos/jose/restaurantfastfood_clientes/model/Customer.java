@@ -1,6 +1,6 @@
-package co.edu.unab.castellanos.jose.restaurantfastfood_clientes;
+package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model;
 
-public class Clientes {
+public class Customer {
 
     private int id;
     private String correo;

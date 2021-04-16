@@ -14,4 +14,5 @@
     <string name="crear_cuenta">Crear Cuenta</string>
     <string name="nombre_completo">Nombre Completo</string>
     <string name="documento_de_identidad">Documento de Identidad</string>
+    <string name="inicio">Inicio</string>
 </resources>

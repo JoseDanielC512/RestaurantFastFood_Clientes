@@ -1,4 +1,4 @@
-package co.edu.unab.castellanos.jose.restaurantfastfood_clientes;
+package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
 
 public class SignInActivity extends AppCompatActivity {
 
