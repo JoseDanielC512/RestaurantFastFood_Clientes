@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,7 +20,7 @@ import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText et_correo, et_contraseña;
+    private EditText email, password;
     private FirebaseAuth mAuth;
 
     @Override
@@ -50,37 +50,47 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void btn_Login(View view){ // Método para el botón de iniciar sesión
-        String email = et_correo.getText().toString();
-        String password = et_contraseña.getText().toString();
+        validate();
 
-        if(email.isEmpty() || password.isEmpty()){
-            Toast.makeText(getApplicationContext(), getString(R.string.txt_llenar_campos_login), Toast.LENGTH_SHORT).show();
-        }else{
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        //Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        //updateUI(user);
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(i);
-                        finish();
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        //Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Toast.makeText(getApplicationContext(), getString(R.string.txt_datos_erroneos_login), Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
-                        //updateUI(null);
-                    }
-                }
-            });
+
+    }
+
+    private void validate(){
+        String email_user = email.getText().toString().trim();
+        String password_user = password.getText().toString().trim();
+
+        if(email_user.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email_user).matches()){
+            email.setError("Correo inválido");
+            Toast.makeText(getApplicationContext(), "Correo inválido", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            email.setError(null);
         }
 
+        if (password_user.isEmpty()) {
+            password.setError("Escribe la contraseña");
+            return;
+        }else {
+            password.setError(null);
+            entry(email_user, password_user);
+        }
+    }
 
-
-
+    private void entry(String email_user, String password_user) {
+        mAuth.signInWithEmailAndPassword(email_user, password_user).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_datos_erroneos_login), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void btn_Signin(View view){ // Método para el botón de crear cuenta
@@ -94,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void asignarElementos(){
-        et_correo = findViewById(R.id.et_email);
-        et_contraseña = findViewById(R.id.et_password);
+        email = findViewById(R.id.et_email);
+        password = findViewById(R.id.et_password);
     }
 }

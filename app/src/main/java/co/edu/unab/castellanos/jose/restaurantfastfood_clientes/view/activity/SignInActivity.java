@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,11 +14,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Pattern;
+
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private EditText documento, nombre, correo, contraseña, contraseñaConfirmacion;
+    private EditText document, name, email, password, passwordConfirm;
     private FirebaseAuth mAuth;
 
     @Override
@@ -42,46 +45,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void Btn_Signin(View view){
-
-        String nombre_user = nombre.getText().toString();
-        String documento_user = documento.getText().toString();
-        String correo_user = correo.getText().toString();
-        String contraseña_user = contraseña.getText().toString();
-        String contraseña_confirmation_user = contraseñaConfirmacion.getText().toString();
-
-        if (nombre_user.isEmpty() || documento_user.isEmpty() || correo_user.isEmpty() || contraseña_user.isEmpty() || contraseña_confirmation_user.isEmpty()){
-            Toast.makeText(getApplicationContext(), getString(R.string.txt_llenar_campos_login), Toast.LENGTH_SHORT).show();
-
-        }else if(contraseña_user.length() < 8){
-            Toast.makeText(getApplicationContext(), R.string.caracteres_minimos, Toast.LENGTH_SHORT).show();
-
-        }else if (contraseña_user.equals(contraseña_confirmation_user)){
-            mAuth.createUserWithEmailAndPassword(correo_user, contraseña_user).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        //Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        //updateUI(user);
-
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        Toast.makeText(getApplicationContext(), "Usuario creado exitosamente.", Toast.LENGTH_SHORT).show();
-                        startActivity(i);
-
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        //Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        //updateUI(null);
-                    }
-                }
-            });
-        }else{
-            Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
-        }
-
-
+        validate();
 
 
         /*  Añadir a base de datos pendiente
@@ -92,6 +56,64 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
+    private void validate(){
+        String name_user = name.getText().toString().trim();
+        String document_user = document.getText().toString().trim();
+        String email_user = email.getText().toString().trim();
+        String password_user = password.getText().toString().trim();
+        String password_confirmation_user = passwordConfirm.getText().toString().trim();
+
+        if (name_user.isEmpty() || document_user.isEmpty() || email_user.isEmpty() || password_user.isEmpty() || password_confirmation_user.isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.txt_llenar_campos_login), Toast.LENGTH_SHORT).show();
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email_user).matches()){
+            email.setError("Correo inválido");
+            Toast.makeText(getApplicationContext(), "Correo inválido", Toast.LENGTH_SHORT).show();
+            return;
+        }else{
+            email.setError(null);
+        }
+
+        if (password_user.length() < 8) {
+            password.setError("Se requiere más de 8 caracteres");
+            Toast.makeText(getApplicationContext(), R.string.caracteres_minimos, Toast.LENGTH_SHORT).show();
+            return;
+        }else if (!Pattern.compile("[0-9]").matcher(password_user).find()){
+            password.setError("Al menos debe tener un número");
+            return;
+        }else {
+            password.setError(null);
+        }
+
+        if (!password_confirmation_user.equals(password_user)){
+            passwordConfirm.setError("Deben ser iguales");
+            return;
+        }else {
+            register(email_user, password_user);
+        }
+    }
+
+    private void register(String email_user, String password_user) {
+        mAuth.createUserWithEmailAndPassword(email_user, password_user).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    Toast.makeText(getApplicationContext(), "Usuario creado exitosamente.", Toast.LENGTH_SHORT).show();
+                    startActivity(i);
+                    finish();
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(getApplicationContext(), "Registro Fallido.", Toast.LENGTH_SHORT).show();
+                    //updateUI(null);
+                }
+            }
+        });
+    }
+
     public void btn_Login(View view){ // Método para el botón de iniciar sesión
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
@@ -99,10 +121,10 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void asignarElementos(){
-        nombre = findViewById(R.id.et_nombre);
-        documento = findViewById(R.id.et_documento);
-        correo = findViewById(R.id.et_email_signin);
-        contraseña = findViewById(R.id.et_password_signin);
-        contraseñaConfirmacion = findViewById(R.id.et_password_signinConfirm);
+        name = findViewById(R.id.et_nombre);
+        document = findViewById(R.id.et_documento);
+        email = findViewById(R.id.et_email_signin);
+        password = findViewById(R.id.et_password_signin);
+        passwordConfirm = findViewById(R.id.et_password_signinConfirm);
     }
 }
