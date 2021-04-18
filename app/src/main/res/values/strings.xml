@@ -17,4 +17,6 @@
     <string name="inicio">Inicio</string>
     <string name="confirme_la_contraseña">Confirme la contraseña</string>
     <string name="caracteres_minimos">La contraseña debe tener mínimo 8 caracteres</string>
+    <string name="ingresa_tu_correo">Ingresa tu correo</string>
+    <string name="recupera_tu_contraseña">Recupera tu contraseña</string>
 </resources>

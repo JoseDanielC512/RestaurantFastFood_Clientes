@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            //i.putExtra("user", this.admin);
             startActivity(i);
             finish();
             Toast.makeText(getApplicationContext(), "Bienvenido " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
@@ -51,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void btn_Login(View view){ // Método para el botón de iniciar sesión
         validate();
-
 
     }
 
@@ -99,8 +97,10 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void btn_ForgotPassword(View view){ // Método para el botón de crear cuenta
-        //
+    public void btn_ForgotPassword(View view){ // Método para el botón de olvidaste contraseña
+        Intent i = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void asignarElementos(){
