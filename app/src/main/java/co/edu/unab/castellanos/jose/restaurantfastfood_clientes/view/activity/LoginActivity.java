@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void btn_Signin(View view){ // Método para el botón de crear cuenta
-        Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+        Intent i = new Intent(getApplicationContext(), SignUpActivity.class);
         startActivity(i);
         finish();
     }

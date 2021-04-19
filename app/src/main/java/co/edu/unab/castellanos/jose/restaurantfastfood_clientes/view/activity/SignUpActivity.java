@@ -10,25 +10,34 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     private EditText document, name, email, password, passwordConfirm;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         mAuth = FirebaseAuth.getInstance(); // Instancia de FirebaseAuth para autenticar users
+        db = FirebaseFirestore.getInstance(); // Access a Cloud Firestore instance from your Activity
+
         asignarElementos();
         setTitle(R.string.crear_cuenta);
 
@@ -54,6 +63,50 @@ public class SignInActivity extends AppCompatActivity {
          */
 
 
+    }
+
+    private void createUser(String email, String name, String document, String password) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("email", email);
+        user.put("document", document);
+        user.put("name", name);
+        user.put("password", password);
+        user.put("score", 0);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String id = currentUser.getUid();
+
+        DocumentReference documentReference = db.collection("customers").document(id);
+
+        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Almacené usuario", Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "No Almacené usuario", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        /*
+        db.collection("customers")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getApplicationContext(), "Almacené usuario", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "No Almacené usuario", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+         */
     }
 
     private void validate(){
@@ -90,15 +143,16 @@ public class SignInActivity extends AppCompatActivity {
             passwordConfirm.setError("Deben ser iguales");
             return;
         }else {
-            register(email_user, password_user);
+            register(email_user, password_user, name_user, document_user);
         }
     }
 
-    private void register(String email_user, String password_user) {
+    private void register(String email_user, String password_user, String name_user, String document_user) {
         mAuth.createUserWithEmailAndPassword(email_user, password_user).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    createUser(email_user, name_user, document_user, password_user);
                     // Sign in success, update UI with the signed-in user's information
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     Toast.makeText(getApplicationContext(), "Usuario creado exitosamente.", Toast.LENGTH_SHORT).show();

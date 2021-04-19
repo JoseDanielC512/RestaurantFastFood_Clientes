@@ -3,21 +3,30 @@ package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model;
 public class Customer {
 
     private int id;
-    private String nombre, correo, password;
+    private String name, email, password, score;
 
-    public Customer(int id, String nombre, String correo, String password) {
+    public Customer(int id, String nombre, String correo, String password, String score) {
         this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
+        this.name = nombre;
+        this.email = correo;
         this.password = password;
+        this.score = score;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getScore() {
+        return score;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -28,12 +37,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
