@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
+import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.Customer;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -72,8 +73,11 @@ public class SignUpActivity extends AppCompatActivity {
         user.put("name", name);
         user.put("password", password);
         user.put("score", 0);
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
+
+        Customer customer = new Customer(id, name, email, password, "0");
 
         DocumentReference documentReference = db.collection("customers").document(id);
 

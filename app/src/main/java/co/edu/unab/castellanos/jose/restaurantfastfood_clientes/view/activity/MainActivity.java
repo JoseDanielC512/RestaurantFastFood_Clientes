@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Category obj, int position) {
                 /*
-                Intent intent = new Intent(MainActivity.this, DetalleActivity.class);
+                Intent intent = new Intent(MainActivity.this, ListadoActivity.class);
                 intent.putExtra("datos", obj);
-                startActivityForResult(intent, CODIGO_DETALLE_PRODUCTO);
+                startActivity(intent);
                  */
             }
         });

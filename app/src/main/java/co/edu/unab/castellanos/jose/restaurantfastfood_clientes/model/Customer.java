@@ -2,10 +2,9 @@ package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model;
 
 public class Customer {
 
-    private int id;
-    private String name, email, password, score;
+    private String id, name, email, password, score;
 
-    public Customer(int id, String nombre, String correo, String password, String score) {
+    public Customer(String id, String nombre, String correo, String password, String score) {
         this.id = id;
         this.name = nombre;
         this.email = correo;
@@ -29,11 +28,11 @@ public class Customer {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
