@@ -41,9 +41,9 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
+            finish();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
-            finish();
             Toast.makeText(getApplicationContext(), "Bienvenido " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void btn_Signin(View view){ // Método para el botón de crear cuenta
+    public void btn_Signup(View view){ // Método para el botón de crear cuenta
         Intent i = new Intent(getApplicationContext(), SignUpActivity.class);
         startActivity(i);
         finish();

@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
-import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.Category;
+import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Category;
 
 public class CategoryAdapter extends RecyclerView.Adapter {
 
@@ -42,14 +42,14 @@ public class CategoryAdapter extends RecyclerView.Adapter {
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivPicture = itemView.findViewById(R.id.iv_foto);
-            tvName = itemView.findViewById(R.id.tv_nombre);
-            tvText = itemView.findViewById(R.id.tv_texto);
+            ivPicture = itemView.findViewById(R.id.iv_picture_list);
+            tvName = itemView.findViewById(R.id.tv_name_list);
+            tvText = itemView.findViewById(R.id.tv_price_list);
         }
 
         public void enlazar(Category category){
-            tvName.setText(String.valueOf(category.getNombre()));
-            tvText.setText(String.valueOf(category.getTexto()));
+            tvName.setText(String.valueOf(category.getName()));
+            tvText.setText(String.valueOf(category.getText()));
             Glide.with(ivPicture.getContext()).load(category.getUrl_img()).into(ivPicture);
 
             if (onItemClickListener!=null){

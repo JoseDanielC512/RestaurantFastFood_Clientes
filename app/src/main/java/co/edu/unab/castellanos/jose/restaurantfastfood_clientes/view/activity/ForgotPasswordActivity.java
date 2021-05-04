@@ -21,7 +21,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText email;
     private Button recover;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +42,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         if (email_user.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email_user).matches()){
             email.setError("Correo inválido");
             return;
+        }else {
+            sendEmail(email_user);
         }
-        sendEmail(email_user);
     }
 
     private void sendEmail(String email_user) {
@@ -69,8 +69,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
-        finish();
     }
 }
