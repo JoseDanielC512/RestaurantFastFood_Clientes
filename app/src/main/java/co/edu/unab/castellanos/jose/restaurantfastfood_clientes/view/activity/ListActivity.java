@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -40,7 +41,7 @@ public class ListActivity extends AppCompatActivity {
 
         Category category = (Category) getIntent().getSerializableExtra("category");
 
-        /*
+
         adapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Product obj, int position) {
@@ -50,7 +51,7 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-         */
+
 
 
         getProducts(category.getType());
