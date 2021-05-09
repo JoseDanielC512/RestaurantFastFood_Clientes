@@ -26,7 +26,7 @@ import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Cus
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText name, email, password, passwordConfirm;
+    private EditText name, email, dir, phone, password, passwordConfirm;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -49,10 +49,12 @@ public class SignUpActivity extends AppCompatActivity {
     private void validate(){
         String name_user = name.getText().toString().trim();
         String email_user = email.getText().toString().trim();
+        String dir_user = dir.getText().toString().trim();
+        String phone_user = phone.getText().toString().trim();
         String password_user = password.getText().toString().trim();
         String password_confirmation_user = passwordConfirm.getText().toString().trim();
 
-        if (name_user.isEmpty() || email_user.isEmpty() || password_user.isEmpty() || password_confirmation_user.isEmpty()){
+        if (name_user.isEmpty() || email_user.isEmpty() || password_user.isEmpty() || password_confirmation_user.isEmpty() || dir_user.isEmpty() || phone_user.isEmpty()){
             Toast.makeText(getApplicationContext(), getString(R.string.txt_llenar_campos_login), Toast.LENGTH_SHORT).show();
         }
 
@@ -79,11 +81,11 @@ public class SignUpActivity extends AppCompatActivity {
             passwordConfirm.setError("Deben ser iguales");
             return;
         }else {
-            register(email_user, password_user, name_user);
+            register(email_user, password_user, name_user, dir_user, phone_user);
         }
     }
 
-    private void register(String email_user, String password_user, String name_user) {
+    private void register(String email_user, String password_user, String name_user, String dir_user, String phone_user) {
         mAuth.createUserWithEmailAndPassword(email_user, password_user).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -92,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     FirebaseUser currentUser = mAuth.getCurrentUser();
                     String id = currentUser.getUid();
-                    Customer customer = new Customer(name_user, email_user);
+                    Customer customer = new Customer(name_user, email_user, dir_user, phone_user);
 
                     DocumentReference documentReference = db.collection("customers").document(id);
 
@@ -127,6 +129,8 @@ public class SignUpActivity extends AppCompatActivity {
     private void asignarElementos(){
         name = findViewById(R.id.et_nombre);
         email = findViewById(R.id.et_email_signin);
+        dir = findViewById(R.id.et_dir_signin);
+        phone = findViewById(R.id.et_phone_signin);
         password = findViewById(R.id.et_password_signin);
         passwordConfirm = findViewById(R.id.et_password_signinConfirm);
     }

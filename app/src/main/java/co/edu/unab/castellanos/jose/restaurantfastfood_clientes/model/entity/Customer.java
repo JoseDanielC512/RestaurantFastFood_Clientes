@@ -5,15 +5,33 @@ import com.google.firebase.firestore.PropertyName;
 
 public class Customer {
 
-    private String id, name, email, urlFoto;
+    private String id, name, email, urlFoto, dir, phone;
     private int score;
 
-    public Customer(String name, String email) {
+    public Customer(String name, String email, String dir, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.dir = dir;
+        this.phone = phone;
         this.urlFoto = "";
         this.score = 0;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getScore() {
