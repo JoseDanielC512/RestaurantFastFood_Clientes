@@ -51,9 +51,6 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         getProducts(category.getType());
 
         rvList.setAdapter(adapter);
@@ -69,7 +66,6 @@ public class ListActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-                    //products.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         Product product = document.toObject(Product.class);

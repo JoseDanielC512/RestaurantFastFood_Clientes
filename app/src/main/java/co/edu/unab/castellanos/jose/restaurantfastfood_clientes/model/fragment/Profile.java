@@ -2,15 +2,25 @@ package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
+import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Customer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +33,13 @@ public class Profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private TextView full_name, direction, email, phone, score, logout;
+    private ImageView iv_logout, iv_picProfile;
+    private Customer customer;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -57,15 +74,75 @@ public class Profile extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        auth = FirebaseAuth.getInstance(); // Instancia de FirebaseAuth para autenticar users
+        db = FirebaseFirestore.getInstance(); // Access a Cloud Firestore instance from your Activity
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //TextView full_name = findViewById(R.id.tv_name_profile);
+
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        associateElements(view);
+        getDataUser();
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+            }
+        });
+
+        iv_picProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+            }
+        });
+
+        return view;
     }
+
+    private void associateElements(View view) {
+        full_name = view.findViewById(R.id.tv_name_profile);
+        direction = view.findViewById(R.id.tv_dir_profile);
+        email = view.findViewById(R.id.tv_email_profile);
+        phone = view.findViewById(R.id.tv_phone_profile);
+        score = view.findViewById(R.id.tv_score_profile);
+        logout = view.findViewById(R.id.tv_logout_profile);
+        iv_logout = view.findViewById(R.id.iv_logout_profile);
+        iv_picProfile = view.findViewById(R.id.iv_pic_profile);
+    }
+
+    private void getDataUser(){
+
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String id = currentUser.getUid();
+        db.collection("customers").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    customer = task.getResult().toObject(Customer.class);
+
+                    full_name.setText(customer.getName());
+                    direction.setText(customer.getDir());
+                    email.setText(customer.getEmail());
+                    phone.setText(customer.getPhone());
+                    score.setText(customer.getScore());
+                }
+            }
+        });
+
+
+
+    }
+
 }

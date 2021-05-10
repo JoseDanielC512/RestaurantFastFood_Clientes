@@ -26,8 +26,9 @@
     <string name="history">History</string>
     <string name="profile">Profile</string>
     <string name="puntaje">Puntaje</string>
-    <string name="nombre_completo">Nombre Completo</string>
     <string name="direccion">Dirección</string>
     <string name="telefono">Teléfono</string>
     <string name="ingresa_tus_datos">Ingresa tus datos</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="precio">Precio:</string>
 </resources>

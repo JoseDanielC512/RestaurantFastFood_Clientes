@@ -8,6 +8,10 @@ public class Customer {
     private String id, name, email, urlFoto, dir, phone;
     private int score;
 
+    public Customer() {
+
+    }
+
     public Customer(String name, String email, String dir, String phone) {
         this.id = id;
         this.name = name;
