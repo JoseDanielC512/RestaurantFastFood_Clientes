@@ -27,7 +27,7 @@ public class ListActivity extends AppCompatActivity {
     private RecyclerView rvList;
     private ArrayList<Product> products;
     private ListAdapter adapter;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class ListActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 intent.putExtra("product", obj);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -69,6 +70,7 @@ public class ListActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         Product product = document.toObject(Product.class);
+                        product.setId(document.getId());
                         products.add(product);
                     }
                     adapter.setProducts(products);

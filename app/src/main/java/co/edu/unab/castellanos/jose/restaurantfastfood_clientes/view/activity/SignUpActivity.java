@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     FirebaseUser currentUser = mAuth.getCurrentUser();
                     String id = currentUser.getUid();
-                    Customer customer = new Customer(name_user, email_user, dir_user, phone_user);
+                    Customer customer = new Customer(name_user, email_user, dir_user, phone_user, 0);
 
                     DocumentReference documentReference = db.collection("customers").document(id);
 

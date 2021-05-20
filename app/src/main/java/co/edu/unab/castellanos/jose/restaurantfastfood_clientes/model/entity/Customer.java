@@ -12,14 +12,14 @@ public class Customer {
 
     }
 
-    public Customer(String name, String email, String dir, String phone) {
+    public Customer(String name, String email, String dir, String phone, int score) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dir = dir;
         this.phone = phone;
         this.urlFoto = "";
-        this.score = 0;
+        this.score = score;
     }
 
     public String getDir() {

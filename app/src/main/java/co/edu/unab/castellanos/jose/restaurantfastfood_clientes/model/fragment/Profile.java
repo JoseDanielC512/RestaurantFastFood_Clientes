@@ -1,5 +1,6 @@
 package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Customer;
+import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.view.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,16 +79,11 @@ public class Profile extends Fragment {
 
         auth = FirebaseAuth.getInstance(); // Instancia de FirebaseAuth para autenticar users
         db = FirebaseFirestore.getInstance(); // Access a Cloud Firestore instance from your Activity
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -97,14 +94,22 @@ public class Profile extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.signOut();
+                if (auth.getCurrentUser() != null){
+                    auth.signOut();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
         iv_picProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.signOut();
+                if (auth.getCurrentUser() != null){
+                    auth.signOut();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -132,17 +137,16 @@ public class Profile extends Fragment {
                 if (task.isSuccessful()){
                     customer = task.getResult().toObject(Customer.class);
 
+                    Integer num = customer.getScore();
+                    String score2 = num.toString();
+
                     full_name.setText(customer.getName());
                     direction.setText(customer.getDir());
                     email.setText(customer.getEmail());
                     phone.setText(customer.getPhone());
-                    score.setText(customer.getScore());
+                    score.setText(score2);
                 }
             }
         });
-
-
-
     }
-
 }
