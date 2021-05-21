@@ -3,12 +3,13 @@ package co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Order {
+public class Order implements Serializable {
 
     private String id, idCustomer, date, state;
-    private ArrayList<Product> products;
+    private ArrayList<Order_products> products;
 
     public Order() {
 
@@ -22,12 +23,12 @@ public class Order {
     }
 
     @Exclude
-    public ArrayList<Product> getProducts() {
+    public ArrayList<Order_products> getProducts() {
         return products;
     }
 
     @Exclude
-    public void setProducts(ArrayList<Product> products) {
+    public void setProducts(ArrayList<Order_products> products) {
         this.products = products;
     }
 
