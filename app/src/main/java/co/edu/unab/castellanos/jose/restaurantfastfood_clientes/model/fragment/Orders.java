@@ -122,36 +122,36 @@ public class Orders extends Fragment {
     }
 
     private void listenOrders() {
-        Log.d("orders", "ingresa al método");
 
         db.collection("customers").document(id_customer).collection("orders").whereEqualTo("state", "Pendiente")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
-                    Log.d("orders", "primera consulta");
 
                     if (!task.getResult().getDocuments().isEmpty()){
                         for (DocumentSnapshot document : task.getResult().getDocuments()) {
                             order = document.toObject(Order.class);
                             order.setId(document.getId());
+
                             db.collection("customers").document(id_customer).collection("orders").document(document.getId())
                                     .collection("order_products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    Log.d("orders", "segunda consulta");
+
                                     products = new ArrayList<>();
                                     if (task.isSuccessful()){
                                         if (!task.getResult().getDocuments().isEmpty()){
                                             for (DocumentSnapshot document : task.getResult().getDocuments()){
-                                                Log.d("orders", document.toString());
+
                                                 Order_products orderProducts = document.toObject(Order_products.class);
                                                 orderProducts.setId(document.getId());
+
                                                 db.collection("products").document(orderProducts.getId_product()).get()
                                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                                Log.d("orders", "tercera consulta");
+
                                                                 if (task.isSuccessful()){
                                                                     Product product = task.getResult().toObject(Product.class);
                                                                     product.setId(task.getResult().getId());
@@ -159,13 +159,11 @@ public class Orders extends Fragment {
                                                                     products.add(orderProducts);
                                                                     order.setProducts(products);
                                                                     adapter.setProducts(products);
-                                                                    Log.d("orders", order.getProducts().toString());
                                                                 }
                                                             }
                                                         });
                                             }
                                         }else {
-
                                             Log.d("orders", task.getResult().getDocuments().toString());
                                         }
                                     }else {
@@ -173,7 +171,6 @@ public class Orders extends Fragment {
                                     }
                                 }
                             });
-                            //products.add(product);
                         }
                     }
                 }

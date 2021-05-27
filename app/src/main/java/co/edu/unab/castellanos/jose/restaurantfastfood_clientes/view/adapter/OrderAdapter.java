@@ -14,9 +14,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.R;
-import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Order;
 import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Order_products;
-import co.edu.unab.castellanos.jose.restaurantfastfood_clientes.model.entity.Product;
 
 public class OrderAdapter extends RecyclerView.Adapter {
 
@@ -43,25 +41,27 @@ public class OrderAdapter extends RecyclerView.Adapter {
     public class ProductViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView ivPicture;
-        private TextView tvName, tvState;
+        private TextView tvName, tvAmount, tvPrice;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ivPicture = itemView.findViewById(R.id.iv_pic_order);
             tvName = itemView.findViewById(R.id.tv_name_product);
-            tvState = itemView.findViewById(R.id.tv_name_state);
+            tvAmount = itemView.findViewById(R.id.tv_amount_product);
+            tvPrice = itemView.findViewById(R.id.tv_totalprice_product);
         }
 
-        public void enlazar(Order_products product){
-            tvName.setText(product.getProduct().getName());
-            //tvState.setText(order.getState()); cantidad y total
-            Glide.with(ivPicture.getContext()).load(product.getProduct().getUrl_picture()).into(ivPicture);
+        public void enlazar(Order_products products){
+            tvName.setText(products.getProduct().getName());
+            tvAmount.setText(Integer.toString(products.getAmount()));
+            tvPrice.setText(Integer.toString(products.getPrice()));
+            Glide.with(ivPicture.getContext()).load(products.getProduct().getUrl_picture()).into(ivPicture);
 
             if (onItemClickListener!=null){
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onItemClickListener.onItemClick(product, getAdapterPosition());
+                        onItemClickListener.onItemClick(products, getAdapterPosition());
                     }
                 });
             }
